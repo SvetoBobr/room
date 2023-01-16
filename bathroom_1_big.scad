@@ -1,5 +1,5 @@
 L=1800;
-W=1500;
+W=1550;
 H=2450;
 
 level=150;
@@ -8,17 +8,18 @@ use<./kitchen.scad>
 use<./plumbing.scad>
 
 translate([80,L+90,0]) kitchen();
-outer_walls();
+//outer_walls();
 _floor();
 %big_placement();
 small_placement();
-translate([0,L,150])plates();
+translate([0,L,190])plates();
 
 plumbing();
-
+/*
 translate([1450+2400+1600,-1100,0]) cube([10,5500,2000]);
 %translate([0,5300-1100,0]) cube([5500,100,2000]);
 
+/*
 translate([1450+2400+1600-670,1650-1100,0]) cube([670,700,2400]);
 translate([1450+2400+1600-670,1650+700+1000-1100,0]) cube([670,850,2400]);
 
@@ -29,7 +30,7 @@ translate([500+800+450,3000,0]) cylinder(h=700,r=450);
     cylinder(h=700,r=450);
     translate([2000,0,0]) cylinder(h=700,r=450);
 }
-
+*/
 module plumbing(){
         // стояк
     color([0.7,0.5,0.5]){
@@ -76,43 +77,43 @@ module small_placement(){
 }
 
 module plates(){
-    a=190;
+    a=195;
     b=a;
     d=3;    
 
     N=1500/(a+d);
     M=4; //2400/(b+d);
 
-    x=-50;
-    y=-155;
+    x=-0;
+    y=-150;
     
-    x2=55;
+    x2=0;
     // solid white
     color([0.9,1,1,0.8]){
         for(i=[0:N]) for (j=[1:M]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,5,b]);
-        for(i=[1:N]) for (j=[1:M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);
+        for(i=[1:N-1]) for (j=[1:M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);
             
         //for(i=[0:N]) for (j=[2+M:5+M]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,5,b]);
-        for(i=[1:N]) for (j=[2+M:5+M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);   
+        for(i=[1:N-1]) for (j=[2+M:5+M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);   
 
-        for(i=[0:N]) for (j=[M+7:M+8]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,5,b]);
-        for(i=[1:N]) for (j=[M+7:M+8]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);       
+        for(i=[0:N]) for (j=[M+6:M+8]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,5,b]);
+        for(i=[1:N-1]) for (j=[M+6:M+8]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);       
 
-        for(i=[1:6]) for (j=[1:4]) translate([W,-i*(a+d)+60,  y+j*(b+d)]) cube([5,a,b]);
+        for(i=[1:6]) for (j=[1:4]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);
         for(i=[1:6]) for (j=[2+M:5+M]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]); 
-        for(i=[1:6]) for (j=[M+7:M+8]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]); 
+        for(i=[1:6]) for (j=[M+6:M+8]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]); 
     }
     
     // glass blocks with light
     color([0.85,0.8,0.8,0.5]){
         for(i=[0:N]) for (j=[M+1]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,80,b]);
-        for(i=[1:N]) for (j=[1+M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);   
+        for(i=[1:N-1]) for (j=[1+M]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);   
             
-        for(i=[0:N]) for (j=[M+1+5]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,80,b]);
-        for(i=[1:N]) for (j=[1+M+5]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);       
+        for(i=[0:N]) for (j=[M+1+4]) translate([x+i*(a+d), 0, y+j*(b+d)]) cube([a,80,b]);
+        for(i=[1:N-1]) for (j=[1+M+4]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);       
          
         for(i=[1:6]) for (j=[1+M]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);   
-        for(i=[1:6]) for (j=[1+M+5]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);    
+        for(i=[1:6]) for (j=[1+M+4]) translate([W,-i*(a+d)+x2,  y+j*(b+d)]) cube([5,a,b]);    
     }
     // glass blocks NO light
     color([0.5,0.5,0.5,0.5]){
@@ -121,11 +122,9 @@ module plates(){
     // mirror
     color([0.5,0.5,0.5]) {
         hull(){
-            for(i=[2:6]) for (j=[2+M:M+1+4]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([6,a,b]);  
+            for(i=[1:6]) for (j=[2+M:M+4]) translate([0,-i*(a+d)+x2,  y+j*(b+d)]) cube([6,a,b]);  
         }        
-        hull(){
-            for(i=[2:4]) for (j=[2+M:M+1+4]) translate([W-5,-i*(a+d)+x2,  y+j*(b+d)]) cube([16,a,b]);  
-        }
+
     }
  //   %translate([0,0,0])cube([W,90,H]);
     
@@ -199,7 +198,7 @@ module _floor(){
     
     //floor
     %difference(){
-        translate([0,-200,0]) cube([W,L+200,160]);
+ #       translate([0,-200,0]) cube([W,L+200,160]);
         translate([450,-1,100])cube([600,200,101]);
         
         hull(){
@@ -274,3 +273,4 @@ module sink(){
         rotate([5,0,0]) translate([0,0,-200]) cube([600,1100,200]);
     }
 }
+
